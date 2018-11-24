@@ -33,12 +33,21 @@ header {
   .logo-text {
     align-items: center;
     align-content: center;
-    color: #B6CE10;
+    color: white; //#B6CE10;
+    font-style: italic;
+  }
+
+  .logo-img {
+    height: 65px;
+  }
+
+  :hover {
+    cursor: pointer;
   }
 }
 
 .content {
-  padding: 0 20px;
+  padding: 25px 20px;
 }
 
 

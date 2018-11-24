@@ -32,4 +32,31 @@ export class DragDropComponent implements OnInit {
       this.draggedAttribute = null;
     }
   }
+
+  reorder(attribute: string, increment: number) {
+    let attrIndex = this.attributes.findIndex(p => p == attribute);
+
+    let newIndex = attrIndex + increment;
+    if (newIndex < 0 || newIndex >= this.attributes.length ) {
+      return;
+    }
+    this.array_move(this.attributes, attrIndex, newIndex);
+    //this.selectedAttributes.
+  }
+
+
+  array_move(arr, old_index, new_index) {
+    if (new_index >= arr.length) {
+        var k = new_index - arr.length + 1;
+        while (k--) {
+            arr.push(undefined);
+        }
+    }
+    arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+    return arr; // for testing
+  }
+
+  find() {
+
+  }
 }

@@ -1,0 +1,27 @@
+.header {
+  height: 60px;
+  position: fixed;
+  width: 100%;
+  box-sizing: border-box;
+  background: #ffffff;
+  -webkit-box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+  -moz-box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+  z-index: 1000;
+}
+
+.logo {
+  text-align: center;
+  width: 59px;
+  height: 60px;
+  line-height: 60px;
+  border-right: solid 1px #e0e0e0;
+  color: #777777;
+  float: left;
+}
+
+.logo-text {
+  font-size: 22px;
+  font-weight: 700;
+  padding-left: 5px;
+}

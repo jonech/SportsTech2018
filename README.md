@@ -1,5 +1,6 @@
-# SportsTech2018
+# CoachAssist
 Melbourne SportsTech Hackathon 2018
+[Live Demo](https://couch-assist.firebaseapp.com/)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.7.
 

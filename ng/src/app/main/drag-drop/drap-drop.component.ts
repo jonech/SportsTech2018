@@ -9,14 +9,24 @@ import { Player } from './player.model';
   styleUrls: ['./drag-drop.component.scss']
 })
 export class DragDropComponent implements OnInit {
-  private readonly CSV_URL: string = 'https://raw.githubusercontent.com/jonech/SportsTech2018/master/csv/MOCK_DATA.csv';
+  private readonly CSV_URL: string = 'https://raw.githubusercontent.com/jonech/SportsTech2018/master/csv/PlayersFinalCatscore.csv';
 
-  attributes = ['Speed', 'Strength', 'Endurance', 'Height', 'Weight', 'Others'];
+  attributes = ['Speed', 'Endurance', 'Body Mass', 'Reach', 'Height'];
+
   selectedAttributes = [];
 
   draggedAttribute:string = null;
 
   players: Array<Player> = [];
+  pagedPlayers: Array<Player> = [];
+  options = {
+    legend: {
+      display: true,
+      position: 'right'
+    }
+  }
+  totalRecords = 0;
+  itemPerPage = 5;
 
   constructor(private rank: RankService) { }
 
@@ -50,54 +60,104 @@ export class DragDropComponent implements OnInit {
     //this.selectedAttributes.
   }
 
+  attributeMap(attr: string) {
+    if (attr == 'Speed') return 'speed';
+    if (attr == 'Endurance') return 'endurance\r\r';
+    if (attr == 'Body Mass') return 'bodymass';
+    if (attr == 'Reach') return 'reach';
+    if (attr == 'Height') return 'height';
+
+  }
 
   array_move(arr, old_index, new_index) {
     if (new_index >= arr.length) {
-        var k = new_index - arr.length + 1;
-        while (k--) {
-            arr.push(undefined);
-        }
+      var k = new_index - arr.length + 1;
+      while (k--) {
+          arr.push(undefined);
+      }
     }
     arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
     return arr; // for testing
   }
 
   find() {
+    this.players = [];
+    this.pagedPlayers = [];
     this.readCSVData();
   }
 
+  paginate(event) {
+    let page = event.page;
 
+    let startIndex = page * this.itemPerPage;
+    let endIndex = startIndex + this.itemPerPage;
+
+    this.pagedPlayers = this.players.slice(startIndex, endIndex);
+  }
 
 
   readCSVData() {
+
     Papa.parse(this.CSV_URL, {
       download: true,
       header: true,
+      newline: "\n\n",
       complete: (results, file) => this.createPlayer(results.data)
     });
   }
 
-  createPlayer(data) {
+  getRank(dataObject, attributes) {
+    let rankWeight = attributes.length;
+    let rank = 0;
+
+    // base on attributes order list
+    // sum up attributes point base on the order
+    // first gets more
+    // last gets the least
+    for (let attr of attributes) {
+      rank += parseFloat(dataObject[this.attributeMap(attr)]) * rankWeight/attributes.length;
+      rankWeight -= 1;
+    }
+    return rank;
+  }
+
+  createPlayer(data: any[]) {
+    this.totalRecords = data.length;
+
+    data.sort((a,b) => {
+      let rankA =this.getRank(a, this.attributes);
+      let rankB =this.getRank(b, this.attributes);
+      return rankB - rankA;
+    });
     for (let d of data) {
-
-      let keyNames = Object.keys(d).filter(d => d!='player'&&d!='height'&&d!='weight');
-      let dataValue = keyNames.map(p => data[p]);
-
+      let keyNames = Object.keys(d).filter(d => d!='player_id'&&d!='height'&&d!='bodymass');
+      let dataValue = keyNames.map(p => d[p]);
       this.players.push({
-        name: d.player,
+        name: d.player_id,
         height: d.height,
-        weight: d.weight,
+        weight: d.bodymass,
         data: this.createDNutDataset(keyNames, dataValue)
       });
     }
-    console.log(this.players);
+
+    this.pagedPlayers = this.players.slice(0, this.itemPerPage);
   }
 
   createDNutDataset(labels, values) {
     return {
       labels: labels,
       datasets: [{
-        data: values
+        data: values,
+        backgroundColor: [
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56"
+        ],
+        hoverBackgroundColor: [
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56"
+        ]
       }]
     }
   }

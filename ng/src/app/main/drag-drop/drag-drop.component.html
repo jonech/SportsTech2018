@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <div class="row align-items-end">
+  <div class="row">
     <div class="col-6">
       <div class="drag-column">
         <ul style="margin:0;padding:0">
@@ -18,9 +18,33 @@
           </div>
         </ul>
       </div>
+
+      <div class="button-row">
+        <button pButton type="button" label="Find" class="ui-button-raised ui-button-success find-button" (click)="find()"></button>
+
+      </div>
     </div>
     <div class="col-6">
-      <button pButton type="button" label="Find" class="ui-button-raised ui-button-success find-button" (click)="find()"></button>
+      <p-paginator [rows]="itemPerPage" [totalRecords]="totalRecords" (onPageChange)="paginate($event)"></p-paginator>
+      <div class="player-list">
+        <div class="player-card" *ngFor="let player of pagedPlayers">
+          <p-card>
+            <div class="row">
+              <div class="col-md-3">
+                <i class="pi pi-user player-icon"></i>
+              </div>
+              <div class="col-md-4">
+                <p><strong>{{ player.name }}</strong></p>
+                <p><strong>Height</strong> {{ player.height | number:'1.0-2' }}</p>
+                <p><strong>Body Mass</strong> {{ player.weight | number:'1.0-2' }}</p>
+              </div>
+              <div class="col-md-5">
+                <p-chart type="doughnut" [data]="player.data" [options]="options"></p-chart>
+              </div>
+            </div>
+          </p-card>
+        </div>
+      </div>
     </div>
     <!-- <div class="col-md-6 drop-column" pDroppable="attr" (onDrop)="drop($event)">
         <div *ngFor="let attr of selectedAttributes"
@@ -41,8 +65,3 @@
   </div>
 </div>
 
-<div class="container-fluid">
-  <div class="row">
-
-  </div>
-</div>

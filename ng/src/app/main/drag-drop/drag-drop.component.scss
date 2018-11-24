@@ -1,18 +1,31 @@
 :host ::ng-deep {
   // p-card
-  .ui-card {
-    //background-color: #4dab23;
-    font-size: 25px;
-    position: relative;
-    border: white 1px solid;
-    text-align: center;
-    background-color: transparent;
-    color: white;
+  .attribute-card-container {
+    .ui-card {
+      //background-color: #4dab23;
+      font-size: 25px;
+      position: relative;
+      border: white 1px solid;
+      text-align: center;
+      background-color: transparent;
+      color: white;
+    }
+
+    .ui-card-body {
+      padding: 15px 1em;
+    }
   }
 
-  .ui-card-body {
-    padding: 15px 1em;
+  .player-card {
+    padding: 5px;
+    .ui-card {
+
+    }
+    .player-icon {
+      font-size: 5em;
+    }
   }
+
 }
 
 .drag-column {
@@ -31,7 +44,16 @@
   bottom: 0;
 }
 
-.find-button {
-  padding: 5px 60px;
-  font-size: 30px;
+.player-list {
+}
+
+.button-row {
+
+  margin-top: 20px;
+  text-align: center;
+  .find-button {
+    padding: 5px 80px;
+    font-size: 30px;
+  }
+
 }

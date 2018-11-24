@@ -6,7 +6,7 @@
 /tmp
 /out-tsc
 
-# dependencies
+# dependencies/ng
 /node_modules
 
 # IDEs and editors

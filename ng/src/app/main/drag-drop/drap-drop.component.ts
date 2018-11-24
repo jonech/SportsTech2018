@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RankService } from '../rank/rank.service';
+import * as Papa from 'papaparse';
+import { Player } from './player.model';
 
 @Component({
   selector: 'drag-drop',
@@ -7,11 +9,14 @@ import { RankService } from '../rank/rank.service';
   styleUrls: ['./drag-drop.component.scss']
 })
 export class DragDropComponent implements OnInit {
+  private readonly CSV_URL: string = 'https://raw.githubusercontent.com/jonech/SportsTech2018/master/csv/MOCK_DATA.csv';
 
   attributes = ['Speed', 'Strength', 'Endurance', 'Height', 'Weight', 'Others'];
   selectedAttributes = [];
 
   draggedAttribute:string = null;
+
+  players: Array<Player> = [];
 
   constructor(private rank: RankService) { }
 
@@ -58,6 +63,42 @@ export class DragDropComponent implements OnInit {
   }
 
   find() {
-    this.rank.readCSVData();
+    this.readCSVData();
+  }
+
+
+
+
+  readCSVData() {
+    Papa.parse(this.CSV_URL, {
+      download: true,
+      header: true,
+      complete: (results, file) => this.createPlayer(results.data)
+    });
+  }
+
+  createPlayer(data) {
+    for (let d of data) {
+
+      let keyNames = Object.keys(d).filter(d => d!='player'&&d!='height'&&d!='weight');
+      let dataValue = keyNames.map(p => data[p]);
+
+      this.players.push({
+        name: d.player,
+        height: d.height,
+        weight: d.weight,
+        data: this.createDNutDataset(keyNames, dataValue)
+      });
+    }
+    console.log(this.players);
+  }
+
+  createDNutDataset(labels, values) {
+    return {
+      labels: labels,
+      datasets: [{
+        data: values
+      }]
+    }
   }
 }

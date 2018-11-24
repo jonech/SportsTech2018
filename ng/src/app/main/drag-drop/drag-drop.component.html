@@ -1,0 +1,48 @@
+<div class="container-fluid">
+  <div class="row align-items-end">
+    <div class="col-6">
+      <div class="drag-column">
+        <ul style="margin:0;padding:0">
+          <div *ngFor="let attr of attributes"
+            class="attribute-card-container"
+            pDraggable="attr"
+            (onDragStart)="dragStart($event,attr)"
+            (onDragEnd)="dragEnd($event)">
+            <p-card>
+              {{ attr }}
+              <div class="order-btns">
+                <button pButton type="button" label="/\" class="ui-button-raised ui-button-secondary" (click)="reorder(attr,-1)"></button>
+                <button pButton type="button" label="\/" class="ui-button-raised ui-button-secondary" (click)="reorder(attr,1)"></button>
+              </div>
+            </p-card>
+          </div>
+        </ul>
+      </div>
+    </div>
+    <div class="col-6">
+      <button pButton type="button" label="Find" class="ui-button-raised ui-button-success find-button" (click)="find()"></button>
+    </div>
+    <!-- <div class="col-md-6 drop-column" pDroppable="attr" (onDrop)="drop($event)">
+        <div *ngFor="let attr of selectedAttributes"
+          class="attribute-card-container"
+          pDraggable="attr"
+          (onDragStart)="dragStart($event,car)"
+          (onDragEnd)="dragEnd($event)">
+          <p-card>
+            {{ attr }}
+            <div class="order-btns">
+              <button pButton type="button" label="/\" class="ui-button-raised ui-button-secondary" (click)="reorder(attr,-1)"></button>
+              <br>
+              <button pButton type="button" label="\/" class="ui-button-raised ui-button-secondary" (click)="reorder(attr,1)"></button>
+            </div>
+          </p-card>
+        </div>
+    </div> -->
+  </div>
+</div>
+
+<div class="container-fluid">
+  <div class="row">
+
+  </div>
+</div>
